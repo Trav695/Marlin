@@ -21,6 +21,8 @@
  */
 #pragma once
 
+#define CONFIG_EXAMPLES_DIR "Creality/Ender-3/CrealityV422"
+
 /**
  * Configuration_adv.h
  *
@@ -372,7 +374,7 @@
    * Thermal Protection Variance Monitor - EXPERIMENTAL
    * Kill the machine on a stuck temperature sensor.
    *
-   * This feature may cause some thermally-stable systems to halt. Be sure to test it thoroughly under
+   * This feature may cause some thermally-stable systems to halt. Be sure to test it throughly under
    * a variety of conditions. Disable if you get false positives.
    *
    * This feature ensures that temperature sensors are updating regularly. If sensors die or get "stuck",
@@ -415,7 +417,7 @@
    * You can either just add a constant compensation with the DEFAULT_Kf value
    * or follow the instruction below to get speed-dependent compensation.
    *
-   * Constant compensation (use only with fan speeds of 0% and 100%)
+   * Constant compensation (use only with fanspeeds of 0% and 100%)
    * ---------------------------------------------------------------------
    * A good starting point for the Kf-value comes from the calculation:
    *   kf = (power_fan * eff_fan) / power_heater * 255
@@ -442,7 +444,7 @@
     //#define PID_FAN_SCALING_ALTERNATIVE_DEFINITION
     #if ENABLED(PID_FAN_SCALING_ALTERNATIVE_DEFINITION)
       // The alternative definition is used for an easier configuration.
-      // Just figure out Kf at full speed (255) and PID_FAN_SCALING_MIN_SPEED.
+      // Just figure out Kf at fullspeed (255) and PID_FAN_SCALING_MIN_SPEED.
       // DEFAULT_Kf and PID_FAN_SCALING_LIN_FACTOR are calculated accordingly.
 
       #define PID_FAN_SCALING_AT_FULL_SPEED 13.0        //=PID_FAN_SCALING_LIN_FACTOR*255+DEFAULT_Kf
@@ -621,7 +623,7 @@
  * FAST_PWM_FAN_FREQUENCY
  *   Set this to your desired frequency.
  *   For AVR, if left undefined this defaults to F = F_CPU/(2*255*1)
- *            i.e., F = 31.4kHz on 16MHz micro-controllers or F = 39.2kHz on 20MHz micro-controllers.
+ *            i.e., F = 31.4kHz on 16MHz microcontrollers or F = 39.2kHz on 20MHz microcontrollers.
  *   For non AVR, if left undefined this defaults to F = 1Khz.
  *   This F value is only to protect the hardware from an absence of configuration
  *   and not to complete it when users are not aware that the frequency must be specifically set to support the target board.
@@ -938,7 +940,7 @@
 
   // Safety: The probe needs time to recognize the command.
   //         Minimum command delay (ms). Enable and increase if needed.
-  //#define BLTOUCH_DELAY 500
+  //#define BLTOUCH_DELAY 500   // RTB
 
   /**
    * Settings for BLTOUCH Classic 1.2, 1.3 or BLTouch Smart 1.0, 2.0, 2.2, 3.0, 3.1, and most clones:
@@ -946,7 +948,7 @@
 
   // Feature: Switch into SW mode after a deploy. It makes the output pulse longer. Can be useful
   //          in special cases, like noisy or filtered input configurations.
-  //#define BLTOUCH_FORCE_SW_MODE
+  //#define BLTOUCH_FORCE_SW_MODE  //   RTB
 
   /**
    * Settings for BLTouch Smart 3.0 and 3.1
@@ -960,14 +962,11 @@
    * Danger: Don't activate 5V mode unless attached to a 5V-tolerant controller!
    * V3.0 or 3.1: Set default mode to 5V mode at Marlin startup.
    * If disabled, OD mode is the hard-coded default on 3.0
-   * On startup, Marlin will compare its EEPROM to this value. If the selected mode
-   * differs, a mode set EEPROM write will be completed at initialization.
-   * Use the option below to force an EEPROM write to a V3.1 probe regardless.
+   * On startup, Marlin will compare its eeprom to this value. If the selected mode
+   * differs, a mode set eeprom write will be completed at initialization.
+   * Use the option below to force an eeprom write to a V3.1 probe regardless.
    */
   //#define BLTOUCH_SET_5V_MODE
-
-  // Safety: Enable voltage mode settings in the LCD menu.
-  //#define BLTOUCH_LCD_VOLTAGE_MENU
 
   /**
    * Safety: Activate if connecting a probe with an unknown voltage mode.
@@ -975,7 +974,7 @@
    * V3.1: Force a probe with unknown mode into selected mode at Marlin startup ( = Probe EEPROM write )
    * To preserve the life of the probe, use this once then turn it off and re-flash.
    */
-  //#define BLTOUCH_FORCE_MODE_SET
+  //#define BLTOUCH_FORCE_MODE_SET  //   RTB
 
   /**
    * Enable "HIGH SPEED" option for probing.
@@ -987,12 +986,8 @@
    */
   //#define BLTOUCH_HS_MODE true
 
-  #ifdef BLTOUCH_HS_MODE
-    // The probe Z offset (M851 Z) is the height at which the probe triggers.
-    // This must be large enough to keep the probe pin off the bed and prevent
-    // it from snagging on the bed clips.
-    #define BLTOUCH_HS_EXTRA_CLEARANCE    7 // Extra Z Clearance
-  #endif
+  // Safety: Enable voltage mode settings in the LCD menu.
+  //#define BLTOUCH_LCD_VOLTAGE_MENU
 
 #endif // BLTOUCH
 
@@ -1053,7 +1048,7 @@
 
   // On a 300mm bed a 5% grade would give a misalignment of ~1.5cm
   #define G34_MAX_GRADE              5    // (%) Maximum incline that G34 will handle
-  #define Z_STEPPER_ALIGN_ITERATIONS 5    // Number of iterations to apply during alignment
+  #define Z_STEPPER_ALIGN_ITERATIONS 3    // Number of iterations to apply during alignment
   #define Z_STEPPER_ALIGN_ACC        0.02 // Stop iterating early if the accuracy is better than this
   #define RESTORE_LEVELING_AFTER_G34      // Restore leveling after G34 is done?
   // After G34, re-home Z (G28 Z) or just calculate it from the last probe heights?
@@ -1064,7 +1059,7 @@
 //
 // Add the G35 command to read bed corners to help adjust screws. Requires a bed probe.
 //
-//#define ASSISTED_TRAMMING
+#define ASSISTED_TRAMMING   // RTB
 #if ENABLED(ASSISTED_TRAMMING)
 
   // Define from 3 to 9 points to probe.
@@ -1079,7 +1074,7 @@
   #define RESTORE_LEVELING_AFTER_G35    // Enable to restore leveling setup after operation
   //#define REPORT_TRAMMING_MM          // Report Z deviation (mm) for each point relative to the first
 
-  //#define ASSISTED_TRAMMING_WIZARD    // Add a Tramming Wizard to the LCD menu
+  #define ASSISTED_TRAMMING_WIZARD    // Add a Tramming Wizard to the LCD menu   RTB
 
   //#define ASSISTED_TRAMMING_WAIT_POSITION { X_CENTER, Y_CENTER, 30 } // Move the nozzle out of the way for adjustment
 
@@ -1160,8 +1155,8 @@
  *  X<1>         Set the given parameters only for the X axis.
  *  Y<1>         Set the given parameters only for the Y axis.
  */
-//#define INPUT_SHAPING_X
-//#define INPUT_SHAPING_Y
+#define INPUT_SHAPING_X   // RTB
+#define INPUT_SHAPING_Y   // RTB
 #if EITHER(INPUT_SHAPING_X, INPUT_SHAPING_Y)
   #if ENABLED(INPUT_SHAPING_X)
     #define SHAPING_FREQ_X  40          // (Hz) The default dominant resonant frequency on the X axis.
@@ -1173,7 +1168,7 @@
   #endif
   //#define SHAPING_MIN_FREQ  20        // By default the minimum of the shaping frequencies. Override to affect SRAM usage.
   //#define SHAPING_MAX_STEPRATE 10000  // By default the maximum total step rate of the shaped axes. Override to affect SRAM usage.
-  //#define SHAPING_MENU                // Add a menu to the LCD to set shaping parameters.
+  #define SHAPING_MENU                // Add a menu to the LCD to set shaping parameters.  RTB
 #endif
 
 // @section motion
@@ -1339,7 +1334,7 @@
   //#define CALIBRATION_MEASURE_WMAX
 
   // Probing at the exact top center only works if the center is flat. If
-  // probing on a screw head or hollow washer, probe near the edges.
+  // probing on a screwhead or hollow washer, probe near the edges.
   //#define CALIBRATION_MEASURE_AT_TOP_EDGES
 
   // Define the pin to read during calibration
@@ -1466,7 +1461,7 @@
 //#define LCD_BACKLIGHT_TIMEOUT_MINS 1  // (minutes) Timeout before turning off the backlight
 
 #if HAS_BED_PROBE && EITHER(HAS_MARLINUI_MENU, HAS_TFT_LVGL_UI)
-  //#define PROBE_OFFSET_WIZARD       // Add a Probe Z Offset calibration option to the LCD menu
+  //#define PROBE_OFFSET_WIZARD       // Add a Probe Z Offset calibration option to the LCD menu  RTB
   #if ENABLED(PROBE_OFFSET_WIZARD)
     /**
      * Enable to init the Probe Z-Offset when starting the Wizard.
@@ -1643,7 +1638,7 @@
   //#define SD_DETECT_STATE HIGH
 
   //#define SD_IGNORE_AT_STARTUP            // Don't mount the SD card when starting up
-  //#define SDCARD_READONLY                 // Read-only SD card (to save over 2K of flash)
+  //#define SDCARD_READONLY                   // Read-only SD card (to save over 2K of flash) // RTB
 
   //#define GCODE_REPEAT_MARKERS            // Enable G-code M808 to set repeat markers and do looping
 
@@ -1679,7 +1674,7 @@
    * an option on the LCD screen to continue the print from the last-known
    * point in the file.
    */
-  //#define POWER_LOSS_RECOVERY
+  #define POWER_LOSS_RECOVERY  // RTB
   #if ENABLED(POWER_LOSS_RECOVERY)
     #define PLR_ENABLED_DEFAULT   false // Power Loss Recovery enabled by default. (Set with 'M413 Sn' & M500)
     //#define BACKUP_POWER_SUPPLY       // Backup power / UPS to move the steppers on power loss
@@ -1943,7 +1938,7 @@
   #endif
 
   /**
-   * Status (Info) Screen customization
+   * Status (Info) Screen customizations
    * These options may affect code size and screen render time.
    * Custom status screens can forcibly override these settings.
    */
@@ -1960,7 +1955,7 @@
   //#define STATUS_ALT_FAN_BITMAP     // Use the alternative fan bitmap
   //#define STATUS_FAN_FRAMES 3       // :[0,1,2,3,4] Number of fan animation frames
   //#define STATUS_HEAT_PERCENT       // Show heating in a progress bar
-  //#define BOOT_MARLIN_LOGO_ANIMATED // Animated Marlin logo. Costs ~3260 (or ~940) bytes of flash.
+  #define BOOT_MARLIN_LOGO_ANIMATED // Animated Marlin logo. Costs ~3260 (or ~940) bytes of flash. RTB
 
   // Frivolous Game Options
   //#define MARLIN_BRICKOUT
@@ -2196,15 +2191,15 @@
   #if ENABLED(DOUBLECLICK_FOR_Z_BABYSTEPPING)
     #define DOUBLECLICK_MAX_INTERVAL 1250   // Maximum interval between clicks, in milliseconds.
                                             // Note: Extra time may be added to mitigate controller latency.
-    //#define MOVE_Z_WHEN_IDLE              // Jump to the move Z menu on double-click when printer is idle.
+    //#define MOVE_Z_WHEN_IDLE              // Jump to the move Z menu on doubleclick when printer is idle.
     #if ENABLED(MOVE_Z_WHEN_IDLE)
       #define MOVE_Z_IDLE_MULTIPLICATOR 1   // Multiply 1mm by this factor for the move step size.
     #endif
   #endif
 
-  //#define BABYSTEP_DISPLAY_TOTAL          // Display total babysteps since last G28
+  #define BABYSTEP_DISPLAY_TOTAL          // Display total babysteps since last G28   RTB
 
-  //#define BABYSTEP_ZPROBE_OFFSET          // Combine M851 Z and Babystepping
+  //#define BABYSTEP_ZPROBE_OFFSET          // Combine M851 Z and Babystepping     RTB
   //#define BABYSTEP_GLOBAL_Z               // Combine M424 Z and Babystepping
 
   #if EITHER(BABYSTEP_ZPROBE_OFFSET, BABYSTEP_GLOBAL_Z)
@@ -2764,7 +2759,7 @@
  *
  * Enable PARK_HEAD_ON_PAUSE to add the G-code M125 Pause and Park.
  */
-//#define ADVANCED_PAUSE_FEATURE
+#define ADVANCED_PAUSE_FEATURE   // RTB
 #if ENABLED(ADVANCED_PAUSE_FEATURE)
   #define PAUSE_PARK_RETRACT_FEEDRATE         60  // (mm/s) Initial retract feedrate.
   #define PAUSE_PARK_RETRACT_LENGTH            2  // (mm) Initial retract.
@@ -2804,7 +2799,7 @@
   //#define FILAMENT_CHANGE_RESUME_ON_INSERT      // Automatically continue / load filament when runout sensor is triggered again.
   //#define PAUSE_REHEAT_FAST_RESUME              // Reduce number of waits by not prompting again post-timeout before continuing.
 
-  //#define PARK_HEAD_ON_PAUSE                    // Park the nozzle during pause and filament change.
+  #define PARK_HEAD_ON_PAUSE                    // Park the nozzle during pause and filament change.  RTB
   //#define HOME_BEFORE_FILAMENT_CHANGE           // If needed, home before parking for filament change
 
   //#define FILAMENT_LOAD_UNLOAD_GCODES           // Add M701/M702 Load/Unload G-codes, plus Load/Unload in the LCD Prepare menu.
@@ -2848,7 +2843,7 @@
   #define INTERPOLATE      true
 
   #if AXIS_IS_TMC_CONFIG(X)
-    #define X_CURRENT       800        // (mA) RMS current. Multiply by 1.414 for peak current.
+    #define X_CURRENT       580        // (mA) RMS current. Multiply by 1.414 for peak current.
     #define X_CURRENT_HOME  X_CURRENT  // (mA) RMS current for sensorless homing
     #define X_MICROSTEPS     16        // 0..256
     #define X_RSENSE          0.11     // Multiplied x1000 for TMC26X
@@ -2868,7 +2863,7 @@
   #endif
 
   #if AXIS_IS_TMC_CONFIG(Y)
-    #define Y_CURRENT       800
+    #define Y_CURRENT       580
     #define Y_CURRENT_HOME  Y_CURRENT
     #define Y_MICROSTEPS     16
     #define Y_RSENSE          0.11
@@ -2888,7 +2883,7 @@
   #endif
 
   #if AXIS_IS_TMC_CONFIG(Z)
-    #define Z_CURRENT       800
+    #define Z_CURRENT       580
     #define Z_CURRENT_HOME  Z_CURRENT
     #define Z_MICROSTEPS     16
     #define Z_RSENSE          0.11
@@ -2988,7 +2983,7 @@
   #endif
 
   #if AXIS_IS_TMC_CONFIG(E0)
-    #define E0_CURRENT      800
+    #define E0_CURRENT      650
     #define E0_MICROSTEPS    16
     #define E0_RSENSE         0.11
     #define E0_CHAIN_POS     -1
@@ -3560,7 +3555,7 @@
      * Feed rates are set by the F parameter of a move command e.g. G1 X0 Y10 F6000
      * Laser power would be calculated by bit shifting off 8 LSB's. In binary this is div 256.
      * The calculation gives us ocr values from 0 to 255, values over F65535 will be set as 255 .
-     * More refined power control such as compensation for accel/decel will be addressed in future releases.
+     * More refined power control such as compesation for accell/decell will be addressed in future releases.
      *
      * M5 I clears inline mode and set power to 0, M5 sets the power output to 0 but leaves inline mode on.
      */
@@ -3568,8 +3563,8 @@
     /**
      * Enable M3 commands for laser mode inline power planner syncing.
      * This feature enables any M3 S-value to be injected into the block buffers while in
-     * CUTTER_MODE_CONTINUOUS. The option allows M3 laser power to be committed without waiting
-     * for a planner synchronization
+     * CUTTER_MODE_CONTINUOUS. The option allows M3 laser power to be commited without waiting
+     * for a planner syncronization
      */
     //#define LASER_POWER_SYNC
 
@@ -4177,7 +4172,7 @@
   #define MAX7219_DEBUG_PROFILE       6   // Display the fraction of CPU time spent in profiled code on this LED matrix
                                           // row. By default idle() is profiled so this shows how "idle" the processor is.
                                           // See class CodeProfiler.
-  //#define MAX7219_DEBUG_MULTISTEPPING 6 // Show multi-stepping 1 to 128 on this LED matrix row.
+  //#define MAX7219_DEBUG_MULTISTEPPING 6 // Show multistepping 1 to 128 on this LED matrix row.
 #endif
 
 /**
